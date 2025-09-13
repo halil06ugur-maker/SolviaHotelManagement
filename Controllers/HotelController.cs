@@ -5,7 +5,12 @@ namespace SolviaHotelManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Hotel : ControllerBase
+    public class HotelController : ControllerBase
     {
+        [HttpGet]
+        public IActionResult get()
+        {
+            return Ok("Hotel");
+        }
     }
 }
