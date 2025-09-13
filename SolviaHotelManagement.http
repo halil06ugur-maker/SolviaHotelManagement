@@ -1,0 +1,6 @@
+@SolviaHotelManagement_HostAddress = http://localhost:5152
+
+GET {{SolviaHotelManagement_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
