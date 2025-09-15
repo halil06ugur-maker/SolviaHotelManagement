@@ -1,5 +1,8 @@
 using HotelReservation.Domain;
 using Microsoft.EntityFrameworkCore;
+using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelService;
+using SolviaHotelManagement.Domainn.Infrastructure.Service.HotelService;
+using SolviaHotelManagement.Models.Utilities.AutoMapper;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,12 +18,12 @@ builder.Services.AddDbContext<SolviaHotelManagementDbContext>(options =>
      options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //AutoMapper
-//builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 //Dependency Injection
 
 //builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-//builder.Services.AddScoped<IHotelService, HotelService>();
+builder.Services.AddScoped<IHotelService, HotelService>();
 //builder.Services.AddScoped<ICustomerService, CustomerService>();
 //builder.Services.AddScoped<IHotelAddressService, HotelAddressService>();
 //builder.Services.AddScoped<IHotelImageService, HotelImageService>();
