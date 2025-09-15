@@ -1,6 +1,10 @@
 using HotelReservation.Domain;
 using Microsoft.EntityFrameworkCore;
+using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelAdressService;
+using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelProperty;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelService;
+using SolviaHotelManagement.Domainn.Infrastructure.Service.HotelAddresservice;
+
 using SolviaHotelManagement.Domainn.Infrastructure.Service.HotelService;
 using SolviaHotelManagement.Models.Utilities.AutoMapper;
 
@@ -25,7 +29,8 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 //builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IHotelService, HotelService>();
 //builder.Services.AddScoped<ICustomerService, CustomerService>();
-//builder.Services.AddScoped<IHotelAddressService, HotelAddressService>();
+builder.Services.AddScoped<IHotelAddressService, HotelAddressService>();
+builder.Services.AddScoped<IHotelPropertyService, HotelPropertyService>();
 //builder.Services.AddScoped<IHotelImageService, HotelImageService>();
 
 //Cors Setting

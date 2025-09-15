@@ -1,4 +1,6 @@
-﻿namespace SolviaHotelManagement.Models.VİewModels.Hotel
+﻿using SolviaHotelManagement.Models.VİewModels.HotelAdress;
+
+namespace SolviaHotelManagement.Models.VİewModels.Hotel
 {
     public class HotelViewModel
     {
@@ -7,6 +9,6 @@
         public string taxNumber { get; set; }
         public string phoneNumber { get; set; }
         public DateTime createdDate { get; set; }
-
+        public List<HotelAddressViewModel>? hotelAddresses { get; set; }
     }
 }
