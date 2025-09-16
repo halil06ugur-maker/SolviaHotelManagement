@@ -24,6 +24,12 @@ namespace SolviaHotelManagement.Controllers
             var result = await _HotelService.GetHotelListAsync();
             return Ok(result);
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetHotelByIdAsync(int id)
+        {
+            var result = await _HotelService.GetHotelByIdAsync(id);
+            return Ok(result);
+        }
         [HttpPost]
         public async Task<IActionResult> AddHotelAsync([FromBody] HotelViewModel ViewModel)
         {
@@ -36,7 +42,7 @@ namespace SolviaHotelManagement.Controllers
             var result=await _HotelService.UpdateHotelAsync(ViewModel);
             return Ok(result);
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHotelAsync(int id)
         {
             var result = await _HotelService.DeleteHotelAsync(id);

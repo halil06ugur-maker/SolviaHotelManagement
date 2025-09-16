@@ -36,10 +36,18 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.HotelService
             await _SolviaHotelManagementDbContext.SaveChangesAsync();
             return new ServiceResult(entity!, "İşlem başarıyla gerçekleştirildi.");
         }
-        //Tek bir Idye göre listemele yapar.(İhtiyaç halinda hazır olması için tanımlandı)
-        public Task<ServiceResult> GetHotelByIdAsync(int id)
+        //Tek bir Idye göre listemele yapar.
+        public async Task<ServiceResult> GetHotelByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var hotel = await _SolviaHotelManagementDbContext.Hotels
+              .Include(h => h.HotelAddresses)
+              .FirstOrDefaultAsync(h => h.Id == id);
+
+            if (hotel == null)
+                return new ServiceResult(null, "Otel bulunamadı.");
+
+            var result = _Mapper.Map<HotelViewModel>(hotel);
+            return new ServiceResult(result, "Otel başarıyla getirildi.");
         }
         //Listeleme İşlemi yapılır
         public async Task<ServiceResult> GetHotelListAsync()
