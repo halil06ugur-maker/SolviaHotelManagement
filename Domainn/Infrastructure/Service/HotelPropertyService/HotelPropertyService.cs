@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelProperty;
 using SolviaHotelManagement.Models.Entities;
 using SolviaHotelManagement.Models.ServiceResult;
-using SolviaHotelManagement.Models.VİewModels.HotelProperty;
+using SolviaHotelManagement.Models.ViewModels.HotelProperty;
 public class HotelPropertyService : IHotelPropertyService
 {
     private readonly SolviaHotelManagementDbContext _SolviaHotelManagementDbContext;

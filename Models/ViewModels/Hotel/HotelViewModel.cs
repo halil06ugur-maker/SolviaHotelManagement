@@ -1,7 +1,7 @@
-﻿using SolviaHotelManagement.Models.VİewModels.HotelAdress;
-using SolviaHotelManagement.Models.VİewModels.HotelProperty;
+﻿using SolviaHotelManagement.Models.ViewModels.HotelAddress;
+using SolviaHotelManagement.Models.ViewModels.HotelProperty;
 
-namespace SolviaHotelManagement.Models.VİewModels.Hotel
+namespace SolviaHotelManagement.Models.ViewModels.Hotel
 {
     public class HotelViewModel
     {

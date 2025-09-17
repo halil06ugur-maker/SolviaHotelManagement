@@ -1,5 +1,5 @@
 ﻿using SolviaHotelManagement.Models.ServiceResult;
-using SolviaHotelManagement.Models.VİewModels.HotelAdress;
+using SolviaHotelManagement.Models.ViewModels.HotelAddress;
 
 namespace SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelAdressService
 {

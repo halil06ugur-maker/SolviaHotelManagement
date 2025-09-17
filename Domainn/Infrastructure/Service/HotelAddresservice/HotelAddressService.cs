@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelAdressService;
 using SolviaHotelManagement.Models.Entities;
 using SolviaHotelManagement.Models.ServiceResult;
-using SolviaHotelManagement.Models.VİewModels.HotelAdress;
+using SolviaHotelManagement.Models.ViewModels.HotelAddress;
 
 namespace SolviaHotelManagement.Domainn.Infrastructure.Service.HotelAddresservice
 {

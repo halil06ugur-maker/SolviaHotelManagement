@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelAdressService;
-using SolviaHotelManagement.Models.VİewModels.HotelAdress;
+using SolviaHotelManagement.Models.ViewModels.HotelAddress;
 
 namespace SolviaHotelManagement.Controllers
 {

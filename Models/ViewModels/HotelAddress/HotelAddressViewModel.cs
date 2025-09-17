@@ -1,4 +1,4 @@
-﻿namespace SolviaHotelManagement.Models.VİewModels.HotelAdress
+﻿namespace SolviaHotelManagement.Models.ViewModels.HotelAddress
 {
     public class HotelAddressViewModel
     {

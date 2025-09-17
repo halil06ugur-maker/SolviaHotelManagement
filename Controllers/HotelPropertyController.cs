@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelProperty;
-using SolviaHotelManagement.Models.VİewModels.HotelProperty;
+using SolviaHotelManagement.Models.ViewModels.HotelProperty;
 using System.Threading.Tasks;
 
 [ApiController]

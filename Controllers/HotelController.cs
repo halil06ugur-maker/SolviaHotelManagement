@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelService;
 using SolviaHotelManagement.Domainn.Infrastructure.Service.HotelService;
-using SolviaHotelManagement.Models.VİewModels.Hotel;
+using SolviaHotelManagement.Models.ViewModels.Hotel;
 
 namespace SolviaHotelManagement.Controllers
 {

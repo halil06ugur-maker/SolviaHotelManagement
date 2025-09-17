@@ -6,6 +6,7 @@ using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelService;
 using SolviaHotelManagement.Domainn.Infrastructure.Service.HotelAddresservice;
 
 using SolviaHotelManagement.Domainn.Infrastructure.Service.HotelService;
+using SolviaHotelManagement.Domainn.Infrastructure.Service.RoomService;
 using SolviaHotelManagement.Models.Utilities.AutoMapper;
 
 
@@ -23,6 +24,7 @@ builder.Services.AddDbContext<SolviaHotelManagementDbContext>(options =>
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<IRoomService, RoomService>();
 
 //Dependency Injection
 
