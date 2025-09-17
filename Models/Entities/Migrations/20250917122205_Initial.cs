@@ -131,17 +131,11 @@ namespace SolviaHotelManagement.Models.Entities.Migrations
                     HotelId = table.Column<int>(type: "int", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     PostCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    HotelAddressId = table.Column<int>(type: "int", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HotelAddress", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_HotelAddress_HotelAddress_HotelAddressId",
-                        column: x => x.HotelAddressId,
-                        principalTable: "HotelAddress",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_HotelAddress_Hotels_HotelId",
                         column: x => x.HotelId,
@@ -349,11 +343,6 @@ namespace SolviaHotelManagement.Models.Entities.Migrations
                 name: "IX_EmployeeHotelRole_RoleId",
                 table: "EmployeeHotelRole",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HotelAddress_HotelAddressId",
-                table: "HotelAddress",
-                column: "HotelAddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HotelAddress_HotelId",

@@ -1,9 +1,13 @@
-﻿namespace SolviaHotelManagement.Models.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace SolviaHotelManagement.Models.Entities
 {
     public class HotelProperty
     {
         public int Id { get; set; }
         public int HotelId { get; set; }
+        
+        [JsonIgnore]
         public Hotel Hotel { get; set; }
         public int Capacity { get; set; }
         public bool IsShuttleTransfer { get; set; }

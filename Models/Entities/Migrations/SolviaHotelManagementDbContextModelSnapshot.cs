@@ -261,9 +261,6 @@ namespace SolviaHotelManagement.Models.Entities.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("HotelAddressId")
-                        .HasColumnType("int");
-
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
@@ -273,8 +270,6 @@ namespace SolviaHotelManagement.Models.Entities.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HotelAddressId");
 
                     b.HasIndex("HotelId");
 
@@ -508,10 +503,6 @@ namespace SolviaHotelManagement.Models.Entities.Migrations
 
             modelBuilder.Entity("SolviaHotelManagement.Models.Entities.HotelAddress", b =>
                 {
-                    b.HasOne("SolviaHotelManagement.Models.Entities.HotelAddress", null)
-                        .WithMany("HotelAddresses")
-                        .HasForeignKey("HotelAddressId");
-
                     b.HasOne("SolviaHotelManagement.Models.Entities.Hotel", "Hotel")
                         .WithMany("HotelAddresses")
                         .HasForeignKey("HotelId")
@@ -594,8 +585,6 @@ namespace SolviaHotelManagement.Models.Entities.Migrations
             modelBuilder.Entity("SolviaHotelManagement.Models.Entities.HotelAddress", b =>
                 {
                     b.Navigation("EmployeeHotelRoles");
-
-                    b.Navigation("HotelAddresses");
                 });
 
             modelBuilder.Entity("SolviaHotelManagement.Models.Entities.Role", b =>

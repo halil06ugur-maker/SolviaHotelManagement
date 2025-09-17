@@ -41,6 +41,7 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.HotelService
         {
             var hotel = await _SolviaHotelManagementDbContext.Hotels
               .Include(h => h.HotelAddresses)
+              .Include(h => h.HotelProperty)
               .FirstOrDefaultAsync(h => h.Id == id);
 
             if (hotel == null)
