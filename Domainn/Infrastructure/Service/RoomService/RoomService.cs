@@ -39,11 +39,14 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.RoomService
 
         public async Task<ServiceResult> GetRoomByIdAsync(int id)
         {
-            var room = await _context.Rooms.FirstOrDefaultAsync(r => r.Id == id);
+            var room = await _context.Rooms
+                .Include(r => r.HotelRooms) // Otelin tüm odalarını da dahil et
+                .FirstOrDefaultAsync(r => r.Id == id);
+
             if (room is null)
                 return new ServiceResult(null, "Oda sistemde bulunamadı.");
-            else
-                return new ServiceResult(room, "Oda başarıyla bulundu.");
+
+            return new ServiceResult(room, "Oda başarıyla bulundu.");
         }
 
         public async Task<ServiceResult> GetRoomListAsync()
