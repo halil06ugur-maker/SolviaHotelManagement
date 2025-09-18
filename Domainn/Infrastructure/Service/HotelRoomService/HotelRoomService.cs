@@ -7,7 +7,6 @@ using SolviaHotelManagement.Models.ServiceResult;
 using SolviaHotelManagement.Models.ViewModels.HotelRoom;
 
 
-
 public class HotelRoomService : IHotelRoomService
 {
     private readonly SolviaHotelManagementDbContext _solviaHotelManagementDbContext;
@@ -34,7 +33,10 @@ public class HotelRoomService : IHotelRoomService
 
     public async Task<ServiceResult> GetListAsync()
     {
-        var list = await _solviaHotelManagementDbContext.HotelRooms.ToListAsync();
+        var list = await _solviaHotelManagementDbContext.HotelRooms
+            .Include(hr => hr.Room)
+            .ToListAsync();
+
         if (list.Any())
         {
             var viewModels = _mapper.Map<List<HotelRoomViewModel>>(list);
@@ -47,6 +49,7 @@ public class HotelRoomService : IHotelRoomService
     {
         var list = await _solviaHotelManagementDbContext.HotelRooms
             .Where(hr => hr.HotelId == hotelId)
+            .Include(hr => hr.Room) // Bu satır eklendi
             .ToListAsync();
 
         if (list.Any())
@@ -61,6 +64,7 @@ public class HotelRoomService : IHotelRoomService
     {
         var list = await _solviaHotelManagementDbContext.HotelRooms
             .Where(hr => hr.RoomId == roomId)
+            .Include(hr => hr.Room) // Bu satır eklendi
             .ToListAsync();
 
         if (list.Any())

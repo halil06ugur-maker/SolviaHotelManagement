@@ -1,7 +1,7 @@
 ﻿namespace SolviaHotelManagement.Models.ViewModels.HotelRoom;
 using SolviaHotelManagement.Models.Entities;
 
-    public class HotelRoomViewModel
+public class HotelRoomViewModel
 {
     public int Id { get; set; }
     public int HotelId { get; set; }
