@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using HotelReservation.Domain;
 using Microsoft.EntityFrameworkCore;
-using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelService;
+using SolviaHotelManagement.Domainn.Infrastructure.Interface.RoomService;
 using SolviaHotelManagement.Models.Entities;
 using SolviaHotelManagement.Models.ServiceResult;
 using SolviaHotelManagement.Models.ViewModels.Hotel;

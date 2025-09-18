@@ -1,8 +1,7 @@
 ﻿using SolviaHotelManagement.Models.ServiceResult;
-using SolviaHotelManagement.Models.ViewModels.Hotel;
 using SolviaHotelManagement.Models.ViewModels.Room;
 
-namespace SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelService
+namespace SolviaHotelManagement.Domainn.Infrastructure.Interface.RoomService
 {
     public interface IRoomService
     {

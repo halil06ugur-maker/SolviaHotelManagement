@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelService;
+using SolviaHotelManagement.Domainn.Infrastructure.Interface.RoomService;
 using SolviaHotelManagement.Domainn.Infrastructure.Service.HotelService;
 using SolviaHotelManagement.Models.ViewModels.Room;
 
