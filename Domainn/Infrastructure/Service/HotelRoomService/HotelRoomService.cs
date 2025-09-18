@@ -6,6 +6,8 @@ using SolviaHotelManagement.Models.Entities;
 using SolviaHotelManagement.Models.ServiceResult;
 using SolviaHotelManagement.Models.ViewModels.HotelRoom;
 
+
+
 public class HotelRoomService : IHotelRoomService
 {
     private readonly SolviaHotelManagementDbContext _solviaHotelManagementDbContext;
@@ -19,7 +21,10 @@ public class HotelRoomService : IHotelRoomService
 
     public async Task<ServiceResult> GetByIdAsync(int id)
     {
-        var entity = await _solviaHotelManagementDbContext.HotelRooms.FindAsync(id);
+        var entity = await _solviaHotelManagementDbContext.HotelRooms
+            .Include(hr => hr.Room)
+            .FirstOrDefaultAsync(hr => hr.Id == id);
+
         if (entity == null)
             return new ServiceResult("Kayıt bulunamadı.");
 
