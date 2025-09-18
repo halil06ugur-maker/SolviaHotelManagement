@@ -4,6 +4,7 @@ using SolviaHotelManagement.Models.ViewModels.Customer;
 using SolviaHotelManagement.Models.ViewModels.CustomerHotelRate;
 using SolviaHotelManagement.Models.ViewModels.CustomerHotelRoom;
 using SolviaHotelManagement.Models.ViewModels.Employee;
+using SolviaHotelManagement.Models.ViewModels.EmployeeHotelRole;
 using SolviaHotelManagement.Models.ViewModels.Hotel;
 using SolviaHotelManagement.Models.ViewModels.HotelAddress;
 using SolviaHotelManagement.Models.ViewModels.HotelImage;
@@ -30,6 +31,7 @@ namespace SolviaHotelManagement.Models.Utilities.AutoMapper
             CreateMap<CustomerHotelRate, CustomerHotelRateViewModel>().ReverseMap();
             CreateMap<Employee, EmployeeViewModel>().ReverseMap();
             CreateMap<Role, RoleViewModel>().ReverseMap();
+            CreateMap<EmployeeHotelRole, EmployeeHotelRoleViewModel>().ReverseMap();
 
         }
     }
