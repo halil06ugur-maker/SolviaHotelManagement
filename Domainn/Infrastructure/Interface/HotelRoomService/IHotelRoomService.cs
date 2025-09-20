@@ -5,25 +5,12 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelRoomServic
 {
     public interface IHotelRoomService
     {
-        // Belirli bir otel odasını ID ile getirir
-        Task<ServiceResult> GetByIdAsync(int id);
 
-        // Tüm otel-oda eşleşmelerini listeler
-        Task<ServiceResult> GetListAsync();
-
-        // Belirli bir otele ait tüm odaları listeler
         Task<ServiceResult> GetListByHotelIdAsync(int hotelId);
+        Task<ServiceResult> GetHotelRoomByIdAsync(int id);
+        Task<ServiceResult> CreateHotelRoomAsync(HotelRoomViewModel model);
+        Task<ServiceResult> UpdateHotelRoomAsync(HotelRoomViewModel model);
+        Task<ServiceResult> DeleteHotelRoomAsync(int id);
 
-        // Belirli bir oda ID’sine göre tüm otel-oda kayıtlarını getirir
-        Task<ServiceResult> GetListByRoomIdAsync(int roomId);
-
-        // Yeni bir otel odası kaydı (ilişkilendirme) ekler
-        Task<ServiceResult> AddAsync(HotelRoomViewModel viewModel);
-
-        // Mevcut bir otel odası kaydını günceller
-        Task<ServiceResult> UpdateAsync(HotelRoomViewModel viewModel);
-
-        // Otel odası kaydını siler
-        Task<ServiceResult> DeleteAsync(int id);
     }
 }

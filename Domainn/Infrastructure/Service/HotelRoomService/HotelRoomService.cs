@@ -6,111 +6,148 @@ using SolviaHotelManagement.Models.Entities;
 using SolviaHotelManagement.Models.ServiceResult;
 using SolviaHotelManagement.Models.ViewModels.HotelRoom;
 
-
 public class HotelRoomService : IHotelRoomService
 {
-    private readonly SolviaHotelManagementDbContext _solviaHotelManagementDbContext;
+    private readonly SolviaHotelManagementDbContext _context;
     private readonly IMapper _mapper;
 
-    public HotelRoomService(SolviaHotelManagementDbContext dbContext, IMapper mapper)
+    public HotelRoomService(SolviaHotelManagementDbContext context, IMapper mapper)
     {
-        _solviaHotelManagementDbContext = dbContext;
+        _context = context;
         _mapper = mapper;
     }
 
-    public async Task<ServiceResult> GetByIdAsync(int id)
-    {
-        var entity = await _solviaHotelManagementDbContext.HotelRooms
-            .Include(hr => hr.Room)
-            .FirstOrDefaultAsync(hr => hr.Id == id);
-
-        if (entity == null)
-            return new ServiceResult("Kayıt bulunamadı.");
-
-        var viewModel = _mapper.Map<HotelRoomViewModel>(entity);
-        return new ServiceResult(viewModel);
-    }
-
-    public async Task<ServiceResult> GetListAsync()
-    {
-        var list = await _solviaHotelManagementDbContext.HotelRooms
-            .Include(hr => hr.Room)
-            .ToListAsync();
-
-        if (list.Any())
-        {
-            var viewModels = _mapper.Map<List<HotelRoomViewModel>>(list);
-            return new ServiceResult(viewModels);
-        }
-        return new ServiceResult("Liste sistemde bulunamadı.");
-    }
-
+    // Otel ID'sine göre odaları getir
     public async Task<ServiceResult> GetListByHotelIdAsync(int hotelId)
     {
-        var list = await _solviaHotelManagementDbContext.HotelRooms
+        var hotelRooms = await _context.HotelRooms
             .Where(hr => hr.HotelId == hotelId)
-            .Include(hr => hr.Room) // Bu satır eklendi
+            .Include(hr => hr.Room) // İlgili oda bilgilerini de dahil et
+            .Include(hr => hr.Hotel) // İlgili otel bilgilerini de dahil et
             .ToListAsync();
 
-        if (list.Any())
+        if (hotelRooms.Any())
         {
-            var viewModels = _mapper.Map<List<HotelRoomViewModel>>(list);
-            return new ServiceResult(viewModels);
+            var viewModels = _mapper.Map<List<HotelRoomViewModel>>(hotelRooms);
+            var responeViewModel = viewModels
+             .Select(x => new
+             {
+                 Id = x.Id,
+                 HotelId = x.HotelId,
+                 HotelName = x.Hotel.Name,
+                 RoomId = x.RoomId,
+                 RoomNumber = x.Room.Number,
+                 RoomType = x.Type,
+                 IsReserved = x.IsReserved
+             })
+             .GroupBy(r => new { r.HotelId, r.HotelName })
+             .Select(g => new
+             {
+                 HotelId = g.Key.HotelId,
+                 HotelName = g.Key.HotelName,
+                 Rooms = g.Select(r => new
+                 {
+                     r.Id,
+                     r.RoomId,
+                     r.RoomNumber,
+                     r.RoomType,
+                     r.IsReserved
+                 }).ToList()
+             })
+             .ToList();
+
+            return new ServiceResult(responeViewModel);
+
         }
-        return new ServiceResult("Liste sistemde bulunamadı.");
+
+        return new ServiceResult("Otele ait oda bulunamadı.");
     }
 
-    public async Task<ServiceResult> GetListByRoomIdAsync(int roomId)
+    // Oda ID'sine göre tek bir odayı getir
+    public async Task<ServiceResult> GetHotelRoomByIdAsync(int id)
     {
-        var list = await _solviaHotelManagementDbContext.HotelRooms
-            .Where(hr => hr.RoomId == roomId)
-            .Include(hr => hr.Room) // Bu satır eklendi
-            .ToListAsync();
+        var hotelRoom = await _context.HotelRooms
+            .Include(hr => hr.Room)
+            .Include(hr => hr.Hotel)
+            .Include(hr => hr.Hotel.HotelImages)
+            .FirstOrDefaultAsync(hr => hr.Id == id);
 
-        if (list.Any())
+        if (hotelRoom != null)
         {
-            var viewModels = _mapper.Map<List<HotelRoomViewModel>>(list);
-            return new ServiceResult(viewModels);
+            var viewModel = _mapper.Map<HotelRoomViewModel>(hotelRoom);
+            var responseViewModel = new
+            {
+                Id = viewModel.Id,
+                HotelId = viewModel.HotelId,
+                HotelName = viewModel.Hotel.Name,
+                HotelImage = viewModel.Hotel.HotelImages.ToList(),
+                RoomId = viewModel.RoomId,
+                RoomNumber = viewModel.Room.Number,
+                RoomType = viewModel.Type,
+                IsReserved = viewModel.IsReserved
+            };
+            return new ServiceResult(responseViewModel);
         }
-        return new ServiceResult("Liste sistemde bulunamadı.");
+
+        return new ServiceResult("Oda bulunamadı.");
     }
 
-    public async Task<ServiceResult> AddAsync(HotelRoomViewModel viewModel)
+    // Yeni bir HotelRoom oluştur
+    public async Task<ServiceResult> CreateHotelRoomAsync(HotelRoomViewModel model)
     {
-        var entity = _mapper.Map<HotelRoom>(viewModel);
-        entity.CreatedDate = DateTime.UtcNow;
+        var hotelRoom = _mapper.Map<HotelRoom>(model); // ViewModel'den Entity'ye dönüştür
+        _context.HotelRooms.Add(hotelRoom);
+        await _context.SaveChangesAsync();
 
-        await _solviaHotelManagementDbContext.HotelRooms.AddAsync(entity);
-        await _solviaHotelManagementDbContext.SaveChangesAsync();
-
-        return new ServiceResult(entity, "İşlem başarıyla gerçekleştirildi.");
+        return new ServiceResult("Oda başarıyla oluşturuldu.");
     }
 
-    public async Task<ServiceResult> UpdateAsync(HotelRoomViewModel viewModel)
+    public async Task<ServiceResult> UpdateHotelRoomAsync(HotelRoomViewModel model)
     {
-        if (viewModel.Id <= 0)
-            return new ServiceResult("Id değeri geçersiz.");
+        // HotelRoom'u bul
+        var hotelRoom = await _context.HotelRooms.FindAsync(model.Id);
 
-        var entity = await _solviaHotelManagementDbContext.HotelRooms.FindAsync(viewModel.Id);
-        if (entity == null)
-            return new ServiceResult("Veritabanında böyle bir kayıt bulunamadı.");
+        if (hotelRoom == null)
+        {
+            return new ServiceResult("Oda bulunamadı.");
+        }
 
-        _mapper.Map(viewModel, entity);
-        _solviaHotelManagementDbContext.HotelRooms.Update(entity);
-        await _solviaHotelManagementDbContext.SaveChangesAsync();
+        // Room ve Hotel nesnelerini bul
+        var room = await _context.Rooms.FindAsync(model.RoomId);  // Odayı buluyoruz
+        var hotel = await _context.Hotels.FindAsync(model.HotelId);  // Oteli buluyoruz
 
-        return new ServiceResult(entity, "İşlem başarıyla gerçekleştirildi.");
+        if (room == null || hotel == null)
+        {
+            return new ServiceResult("Oda veya otel bulunamadı.");
+        }
+
+        // Güncelleme işlemi
+        hotelRoom.Room = room;  // Room nesnesini atıyoruz
+        hotelRoom.Hotel = hotel; // Hotel nesnesini atıyoruz
+        hotelRoom.Type = model.Type;
+        hotelRoom.IsReserved = model.IsReserved;
+        hotelRoom.CreatedDate = model.CreatedDate;
+
+        // Değişiklikleri kaydet
+        _context.HotelRooms.Update(hotelRoom);
+        await _context.SaveChangesAsync();
+
+        return new ServiceResult("Oda başarıyla güncellendi.");
     }
 
-    public async Task<ServiceResult> DeleteAsync(int id)
+    // HotelRoom'u sil
+    public async Task<ServiceResult> DeleteHotelRoomAsync(int id)
     {
-        var entity = await _solviaHotelManagementDbContext.HotelRooms.FindAsync(id);
-        if (entity == null)
-            return new ServiceResult("Veritabanında böyle bir kayıt bulunamadı.");
+        var hotelRoom = await _context.HotelRooms.FindAsync(id);
 
-        _solviaHotelManagementDbContext.HotelRooms.Remove(entity);
-        await _solviaHotelManagementDbContext.SaveChangesAsync();
+        if (hotelRoom == null)
+        {
+            return new ServiceResult("Oda bulunamadı.");
+        }
 
-        return new ServiceResult(entity, "İşlem başarıyla gerçekleştirildi.");
+        _context.HotelRooms.Remove(hotelRoom);
+        await _context.SaveChangesAsync();
+
+        return new ServiceResult("Oda başarıyla silindi.");
     }
 }

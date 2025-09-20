@@ -40,7 +40,7 @@ namespace SolviaHotelManagement.Controllers
         {
             var result = await _roomService.UpdateRoomAsync(viewModel);
             return Ok(result);
-        }
+        }   
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoomAsync(int id)
         {

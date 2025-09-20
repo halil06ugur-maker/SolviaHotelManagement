@@ -12,3 +12,4 @@ namespace SolviaHotelManagement.Models.ViewModels.Room
         //public List<CustomerHotelRoomViewModel>? CustomerHotelRooms { get; set; }
     }
 }
+    
