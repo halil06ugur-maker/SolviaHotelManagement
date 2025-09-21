@@ -38,10 +38,16 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.EmployeeService
 
         public async Task<ServiceResult> GetEmployeeByIdAsync(int id)
         {
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+            var employee = await _context.Employees
+         .Include(e => e.EmployeeHotelRoles)
+         .FirstOrDefaultAsync(e => e.Id == id);
+
+            // Eğer çalışan bulunamazsa, uygun mesajla hata döndürüyoruz
             if (employee is null)
                 return new ServiceResult(null, "Çalışan sistemde bulunamadı.");
-                return new ServiceResult(employee, "Çalışan başarıyla getirildi.");
+
+            // Çalışan ve ilişkili veriler başarıyla getirilmişse, sonucu döndürüyoruz
+            return new ServiceResult(employee, "Çalışan başarıyla getirildi.");
         }
 
         public async Task<ServiceResult> GetEmployeeListAsync()

@@ -17,6 +17,7 @@ public class HotelRoomService : IHotelRoomService
         _mapper = mapper;
     }
 
+
     // Otel ID'sine göre odaları getir
     public async Task<ServiceResult> GetListByHotelIdAsync(int hotelId)
     {
@@ -102,37 +103,19 @@ public class HotelRoomService : IHotelRoomService
         return new ServiceResult("Oda başarıyla oluşturuldu.");
     }
 
-    public async Task<ServiceResult> UpdateHotelRoomAsync(HotelRoomViewModel model)
+    public async Task<ServiceResult> UpdateHotelRoomAsync(HotelRoomViewModel ViewModel)
     {
-        // HotelRoom'u bul
-        var hotelRoom = await _context.HotelRooms.FindAsync(model.Id);
-
-        if (hotelRoom == null)
-        {
-            return new ServiceResult("Oda bulunamadı.");
-        }
-
-        // Room ve Hotel nesnelerini bul
-        var room = await _context.Rooms.FindAsync(model.RoomId);  // Odayı buluyoruz
-        var hotel = await _context.Hotels.FindAsync(model.HotelId);  // Oteli buluyoruz
-
-        if (room == null || hotel == null)
-        {
-            return new ServiceResult("Oda veya otel bulunamadı.");
-        }
-
-        // Güncelleme işlemi
-        hotelRoom.Room = room;  // Room nesnesini atıyoruz
-        hotelRoom.Hotel = hotel; // Hotel nesnesini atıyoruz
-        hotelRoom.Type = model.Type;
-        hotelRoom.IsReserved = model.IsReserved;
-        hotelRoom.CreatedDate = model.CreatedDate;
-
-        // Değişiklikleri kaydet
-        _context.HotelRooms.Update(hotelRoom);
+        if(ViewModel.Id<=0)
+            return new ServiceResult("Id değeri geçersiz");
+        var HotelRoom=await _context.HotelRooms.FindAsync(ViewModel.Id);
+        if (HotelRoom == null)
+            return new ServiceResult("Veri tabanında böyle bir oda alınamadı.");
+        var entity=_mapper.Map<HotelRoom>(ViewModel);
+        _context.ChangeTracker.Clear();
+        _context.HotelRooms.Update(entity);
         await _context.SaveChangesAsync();
-
-        return new ServiceResult("Oda başarıyla güncellendi.");
+        return new ServiceResult(HotelRoom, "Başarıyla güncellendi.");
+    
     }
 
     // HotelRoom'u sil
@@ -147,7 +130,50 @@ public class HotelRoomService : IHotelRoomService
 
         _context.HotelRooms.Remove(hotelRoom);
         await _context.SaveChangesAsync();
-
         return new ServiceResult("Oda başarıyla silindi.");
     }
+
+    //List
+    public async Task<ServiceResult> GetAllHotelRooms()
+    {
+        var hotelRooms = await _context.HotelRooms
+            .Include(hr => hr.Room) // Oda bilgilerini dahil et
+            .Include(hr => hr.Hotel) // Otel bilgilerini dahil et
+            .ToListAsync();
+
+        if (hotelRooms.Any())
+        {
+            var viewModels = _mapper.Map<List<HotelRoomViewModel>>(hotelRooms);
+            var responseViewModel = viewModels
+                .Select(x => new
+                {
+                    HotelId = x.HotelId,
+                    HotelName = x.Hotel.Name,
+                    RoomId = x.RoomId,
+                    RoomNumber = x.Room.Number,
+                    RoomType = x.Type,
+                    IsReserved = x.IsReserved
+                })
+                .GroupBy(r => new { r.HotelId, r.HotelName })
+                .Select(g => new
+                {
+                    HotelId = g.Key.HotelId,
+                    HotelName = g.Key.HotelName,
+                    Rooms = g.Select(r => new
+                    {
+                        r.RoomId,
+                        r.RoomNumber,
+                        r.RoomType,
+                        r.IsReserved
+                    }).ToList()
+                })
+                .ToList();
+
+            return new ServiceResult(responseViewModel);
+        }
+
+        return new ServiceResult("Otel odaları bulunamadı.");
+    }
+
+
 }

@@ -39,9 +39,15 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.RoleService
 
         public async Task<ServiceResult> GetRoleByIdAsync(int id)
         {
-            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == id);
+            // `Include` ile EmployeeHotelRoles ilişkisini de getiriyoruz.
+            var role = await _context.Roles
+                .Include(r => r.EmployeeHotelRoles)  // İlişkili EmployeeHotelRoles'ü dahil et
+                .FirstOrDefaultAsync(r => r.Id == id);  // İlk rolü getir (id'ye göre)
+
             if (role is null)
                 return new ServiceResult(null, "Rol sistemde bulunamadı.");
+
+            // Eğer rol bulunursa, başarıyla dönüyoruz
             return new ServiceResult(role, "Rol başarıyla getirildi.");
         }
 

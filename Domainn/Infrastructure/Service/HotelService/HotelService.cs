@@ -44,6 +44,8 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.HotelService
               .Include(h => h.HotelProperty)
               .Include(h=>h.HotelImages)
               .Include(h=>h.HotelRooms)
+              .Include(h=>h.EmployeeHotelRoles)
+
               .FirstOrDefaultAsync(h => h.Id == id);
 
             if (hotel == null)

@@ -14,8 +14,16 @@ public class HotelRoomController : ControllerBase
         _hotelRoomService = hotelRoomService;
     }
 
-    // Otel ID'sine göre odaları getir
-    [HttpGet("byhotel/{hotelId}")]
+    [HttpGet]
+    public async Task<IActionResult> GetAllHotelRooms()
+    {
+        var result=await _hotelRoomService.GetAllHotelRooms();
+        return Ok(result);
+    }
+    
+
+        // Otel ID'sine göre odaları getir
+        [HttpGet("byhotel/{hotelId}")]
     public async Task<IActionResult> GetListByHotelId(int hotelId)
     {
         var result = await _hotelRoomService.GetListByHotelIdAsync(hotelId);

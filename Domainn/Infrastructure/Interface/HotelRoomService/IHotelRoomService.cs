@@ -5,12 +5,11 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelRoomServic
 {
     public interface IHotelRoomService
     {
-
+        Task<ServiceResult> GetAllHotelRooms();
         Task<ServiceResult> GetListByHotelIdAsync(int hotelId);
         Task<ServiceResult> GetHotelRoomByIdAsync(int id);
         Task<ServiceResult> CreateHotelRoomAsync(HotelRoomViewModel model);
         Task<ServiceResult> UpdateHotelRoomAsync(HotelRoomViewModel model);
         Task<ServiceResult> DeleteHotelRoomAsync(int id);
-
     }
 }
