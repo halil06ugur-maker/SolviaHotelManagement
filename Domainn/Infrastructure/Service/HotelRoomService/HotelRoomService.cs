@@ -18,7 +18,7 @@ public class HotelRoomService : IHotelRoomService
     }
 
 
-    // Otel ID'sine göre odaları getir
+    /// Otel ID'sine göre odaları getir
     public async Task<ServiceResult> GetListByHotelIdAsync(int hotelId)
     {
         var hotelRooms = await _context.HotelRooms
@@ -30,10 +30,10 @@ public class HotelRoomService : IHotelRoomService
         if (hotelRooms.Any())
         {
             var viewModels = _mapper.Map<List<HotelRoomViewModel>>(hotelRooms);
-            var responeViewModel = viewModels
+            var responseViewModel = viewModels
              .Select(x => new
              {
-                 Id = x.Id,
+                 HotelRoomId = x.Id,    
                  HotelId = x.HotelId,
                  HotelName = x.Hotel.Name,
                  RoomId = x.RoomId,
@@ -48,7 +48,7 @@ public class HotelRoomService : IHotelRoomService
                  HotelName = g.Key.HotelName,
                  Rooms = g.Select(r => new
                  {
-                     r.Id,
+                     HotelRoomId = r.HotelRoomId,  
                      r.RoomId,
                      r.RoomNumber,
                      r.RoomType,
@@ -57,12 +57,12 @@ public class HotelRoomService : IHotelRoomService
              })
              .ToList();
 
-            return new ServiceResult(responeViewModel);
-
+            return new ServiceResult(responseViewModel);
         }
 
         return new ServiceResult("Otele ait oda bulunamadı.");
     }
+
 
     // Oda ID'sine göre tek bir odayı getir
     public async Task<ServiceResult> GetHotelRoomByIdAsync(int id)
@@ -78,7 +78,7 @@ public class HotelRoomService : IHotelRoomService
             var viewModel = _mapper.Map<HotelRoomViewModel>(hotelRoom);
             var responseViewModel = new
             {
-                Id = viewModel.Id,
+                HotelRoomId = viewModel.Id,         
                 HotelId = viewModel.HotelId,
                 HotelName = viewModel.Hotel.Name,
                 HotelImage = viewModel.Hotel.HotelImages.ToList(),
@@ -147,6 +147,7 @@ public class HotelRoomService : IHotelRoomService
             var responseViewModel = viewModels
                 .Select(x => new
                 {
+                    HotelRoomId = x.Id,      // Burada HotelRoomId ekleniyor
                     HotelId = x.HotelId,
                     HotelName = x.Hotel.Name,
                     RoomId = x.RoomId,
@@ -161,6 +162,7 @@ public class HotelRoomService : IHotelRoomService
                     HotelName = g.Key.HotelName,
                     Rooms = g.Select(r => new
                     {
+                        HotelRoomId = r.HotelRoomId,  // Burası da önemli
                         r.RoomId,
                         r.RoomNumber,
                         r.RoomType,
@@ -177,3 +179,4 @@ public class HotelRoomService : IHotelRoomService
 
 
 }
+
