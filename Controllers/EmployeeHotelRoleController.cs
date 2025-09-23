@@ -37,7 +37,7 @@ namespace SolviaHotelManagement.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEmployeeHotelRoleAsync([FromBody] EmployeeHotelRoleViewModel viewModel)
         {
             var result = await _employeeHotelRoleService.UpdateEmployeeHotelRoleAsync(viewModel);

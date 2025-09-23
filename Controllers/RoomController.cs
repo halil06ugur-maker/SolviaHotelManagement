@@ -35,7 +35,7 @@ namespace SolviaHotelManagement.Controllers
             var result = await _roomService.AddRoomAsync(viewModel);
             return Ok(result);
         }
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRoomAsync([FromBody] RoomViewModel viewModel)
         {
             var result = await _roomService.UpdateRoomAsync(viewModel);

@@ -64,13 +64,16 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.RoleService
         {
             if (viewModel.Id <= 0)
                 return new ServiceResult("Id değeri geçersizdir.");
+
             var role = await _context.Roles.FindAsync(viewModel.Id);
             if (role is null)
                 return new ServiceResult("Sistemde böyle bir rol bulunamadı.");
-            var entity = _mapper.Map<Role>(viewModel);
-            _context.Roles.Update(entity);
+
+            // AutoMapper ile var olan entity üzerine map et
+            _mapper.Map(viewModel, role);
+
             await _context.SaveChangesAsync();
-            return new ServiceResult(entity, "Rol başarıyla güncellendi.");
+            return new ServiceResult(role, "Rol başarıyla güncellendi.");
         }
     }
 }

@@ -63,14 +63,17 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.EmployeeService
         {
             if (viewModel.Id <= 0)
                 return new ServiceResult("Id değeri geçersizdir.");
+
             var employee = await _context.Employees.FindAsync(viewModel.Id);
             if (employee is null)
                 return new ServiceResult("Sistemde böyle bir çalışan bulunamadı.");
-            var entity = _mapper.Map<Employee>(viewModel);
-            _context.ChangeTracker.Clear();
-            _context.Employees.Update(entity);
+
+            // Var olan entity üzerine map et
+            _mapper.Map(viewModel, employee);
+
             await _context.SaveChangesAsync();
-            return new ServiceResult(entity, "Çalışan başarıyla güncellendi");
+
+            return new ServiceResult(employee, "Çalışan başarıyla güncellendi");
         }
     }
 }

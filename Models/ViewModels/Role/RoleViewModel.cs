@@ -8,6 +8,6 @@ namespace SolviaHotelManagement.Models.ViewModels.Role
         public string Name { get; set; } 
         public string? Description { get; set; }
         public DateTime CreatedDate { get; set; }
-        public List<EmployeeHotelRoleViewModel>? EmployeeHotelRoles { get; set; }
+        //public List<EmployeeHotelRoleViewModel>? EmployeeHotelRoles { get; set; }
     }
 }

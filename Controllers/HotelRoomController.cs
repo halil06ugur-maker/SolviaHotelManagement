@@ -47,7 +47,7 @@ public class HotelRoomController : ControllerBase
     }
 
     // HotelRoom'u güncelle
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateHotelRoom([FromBody] HotelRoomViewModel viewModel)
     {
         var result = await _hotelRoomService.UpdateHotelRoomAsync(viewModel);

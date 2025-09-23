@@ -11,6 +11,6 @@ namespace SolviaHotelManagement.Models.ViewModels.Employee
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
-        public List<EmployeeHotelRoleViewModel>? EmployeeHotelRoles { get; set; }
+        //public List<EmployeeHotelRoleViewModel>? EmployeeHotelRoles { get; set; }
     }
 }

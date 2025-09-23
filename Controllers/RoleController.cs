@@ -40,7 +40,7 @@ namespace SolviaHotelManagement.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRoleAsync([FromBody] RoleViewModel viewModel)
         {
             var result = await _roleService.UpdateRoleAsync(viewModel);
