@@ -1,5 +1,8 @@
 using HotelReservation.Domain;
 using Microsoft.EntityFrameworkCore;
+using SolviaHotelManagement.Domainn.Infrastructure.Interface.CustomerHotelRate;
+using SolviaHotelManagement.Domainn.Infrastructure.Interface.CustomerHotelRoomService;
+using SolviaHotelManagement.Domainn.Infrastructure.Interface.CustomerService;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.EmployeeHotelRoleService;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.EmployeeService;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelAdressService;
@@ -9,6 +12,9 @@ using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelRoomService;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.HotelService;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.RoleService;
 using SolviaHotelManagement.Domainn.Infrastructure.Interface.RoomService;
+using SolviaHotelManagement.Domainn.Infrastructure.Service.CustomerHotelRateService;
+using SolviaHotelManagement.Domainn.Infrastructure.Service.CustomerHotelRoomService;
+using SolviaHotelManagement.Domainn.Infrastructure.Service.CustomerService;
 using SolviaHotelManagement.Domainn.Infrastructure.Service.EmployeeHotelRoleService;
 using SolviaHotelManagement.Domainn.Infrastructure.Service.EmployeeService;
 using SolviaHotelManagement.Domainn.Infrastructure.Service.HotelAddresservice;
@@ -48,6 +54,9 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IEmployeeHotelRoleService, EmployeeHotelRoleService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<ICustomerHotelRateService, CustomerHotelRateService>();
+builder.Services.AddScoped<ICustomerHotelRoomService, CustomerHotelRoomService>();
 
 //Cors Setting
 builder.Services.AddCors(options =>
