@@ -37,31 +37,94 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.CustomerHotelRate
             return new ServiceResult(rate, "Rate başarıyla silindi.");
         }
 
-        public async Task<ServiceResult> GetRateByIdAsync(int id)
+        public async Task<ServiceResult> GetRateByIdAsync(int hotelId)
         {
-            var rate = await _context.CustomerHotelRates
-                                     .Include(r => r.Customer)
-                                     .Include(r => r.Hotel)
-                                     .FirstOrDefaultAsync(r => r.Id == id);
+            var rates = await _context.CustomerHotelRates
+                .Where(r => r.HotelId == hotelId)
+                .Include(r => r.Customer)
+                .Include(r => r.Hotel)
+                .ToListAsync();
 
-            if (rate is null)
-                return new ServiceResult(null, "Rate bulunamadı.");
+            if (!rates.Any())
+                return new ServiceResult("Otele ait müşteri puanı bulunamadı.");
 
-            var result = _mapper.Map<CustomerHotelRateViewModel>(rate);
-            return new ServiceResult(result, "Rate başarıyla getirildi.");
+            var viewModels = _mapper.Map<List<CustomerHotelRateViewModel>>(rates);
+
+            var response = viewModels
+                .Select(r => new
+                {
+                    RateId = r.Id,
+                    HotelId = r.HotelId,
+                    HotelName = r.Hotel?.name,
+                    CustomerId = r.CustomerId,
+                    CustomerName = r.Customer?.Name,
+                    r.Rate,
+                    r.Description,
+                    r.CreatedDate
+                })
+                .GroupBy(r => new { r.HotelId, r.HotelName })
+                .Select(g => new
+                {
+                    HotelId = g.Key.HotelId,
+                    HotelName = g.Key.HotelName,
+                    CustomerRatings = g.Select(x => new
+                    {
+                        x.RateId,
+                        x.CustomerId,
+                        x.CustomerName,
+                        x.Rate,
+                        x.Description,
+                        x.CreatedDate
+                    }).ToList()
+                })
+                .ToList();
+
+            return new ServiceResult(response, "Müşteri puanları başarıyla getirildi.");
         }
 
         public async Task<ServiceResult> GetRateListAsync()
         {
             var rates = await _context.CustomerHotelRates
-                                      .Include(r => r.Customer)
-                                      .Include(r => r.Hotel)
-                                      .ToListAsync();
+                             .Include(r => r.Customer)
+                             .Include(r => r.Hotel)
+                             .ToListAsync();
+
             if (rates.Any())
             {
-                var result = _mapper.Map<List<CustomerHotelRateViewModel>>(rates);
-                return new ServiceResult(result, "Rate listesi başarıyla getirildi.");
+                var viewModels = _mapper.Map<List<CustomerHotelRateViewModel>>(rates);
+
+                var responseViewModel = viewModels
+                    .Select(r => new
+                    {
+                        RateId = r.Id,
+                        HotelId = r.HotelId,
+                        HotelName = r.Hotel?.name,
+                        CustomerId = r.CustomerId,
+                        CustomerName = r.Customer?.Name,
+                        r.Rate,
+                        r.Description,
+                        r.CreatedDate
+                    })
+                    .GroupBy(x => new { x.HotelId, x.HotelName })
+                    .Select(g => new
+                    {
+                        HotelId = g.Key.HotelId,
+                        HotelName = g.Key.HotelName,
+                        CustomerRates = g.Select(r => new
+                        {
+                            r.RateId,
+                            r.CustomerId,
+                            r.CustomerName,
+                            r.Rate,
+                            r.Description,
+                            r.CreatedDate
+                        }).ToList()
+                    })
+                    .ToList();
+
+                return new ServiceResult(responseViewModel, "Rate listesi başarıyla getirildi.");
             }
+
             return new ServiceResult("Rate listesi bulunamadı.");
         }
 

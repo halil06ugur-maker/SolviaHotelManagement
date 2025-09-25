@@ -14,7 +14,7 @@ public class HotelRoomViewModel
     [JsonIgnore] public  Room? Room { get; set; }   // Room ile ilişki (Navigation Property)
 
     public string Type { get; set; }
-    public bool IsReserved { get; set; }
+    public bool IsReserved { get; set; } = true;
     public DateTime CreatedDate { get; set; }
 }
 

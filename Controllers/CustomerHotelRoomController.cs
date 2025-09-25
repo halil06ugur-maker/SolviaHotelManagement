@@ -37,7 +37,7 @@ namespace SolviaHotelManagement.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateReservationAsync([FromBody] CustomerHotelRoomViewModel viewModel)
         {
             var result = await _reservationService.UpdateReservationAsync(viewModel);

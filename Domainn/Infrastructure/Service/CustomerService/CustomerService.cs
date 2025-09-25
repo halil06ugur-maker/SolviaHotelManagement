@@ -51,9 +51,9 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.CustomerService
             if (customers.Any())
             {
                 var result = _mapper.Map<List<CustomerViewModel>>(customers);
-                return new ServiceResult("Customer listesi başarıyla getirildi.");
+                return new ServiceResult( result, "Customer listesi başarıyla getirildi.");
             }
-            return new ServiceResult("Customer listesi bulunamadı.");
+            return new ServiceResult("Müşteri listesi bulunamadı.");
         }
 
         public async Task<ServiceResult> UpdateCustomerAsync(CustomerViewModel viewModel)

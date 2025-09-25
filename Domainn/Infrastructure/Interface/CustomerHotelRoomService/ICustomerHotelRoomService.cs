@@ -6,7 +6,7 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Interface.CustomerHotelRo
     public interface ICustomerHotelRoomService
     {
         Task<ServiceResult> GetReservationListAsync();
-        Task<ServiceResult> GetReservationByIdAsync(int id);
+        Task<ServiceResult> GetReservationByIdAsync(int HotelId);
         Task<ServiceResult> AddReservationAsync(CustomerHotelRoomViewModel viewModel);
         Task<ServiceResult> UpdateReservationAsync(CustomerHotelRoomViewModel viewModel);
         Task<ServiceResult> DeleteReservationAsync(int id);
