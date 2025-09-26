@@ -19,7 +19,6 @@ namespace SolviaHotelManagement.Domainn.Infrastructure.Service.CustomerHotelRoom
             _mapper = mapper;
         }
 
-        // ==================== ADD ====================
         public async Task<ServiceResult> AddReservationAsync(CustomerHotelRoomViewModel viewModel)
         {
             // 1) Otelde oda var mı?

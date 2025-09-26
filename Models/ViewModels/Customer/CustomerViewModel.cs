@@ -14,8 +14,8 @@ namespace SolviaHotelManagement.Models.ViewModels.Customer
             public string Gender { get; set; }
             public DateTime CreatedDate { get; set; }
 
-            // İlişkiler - şimdilik yorum satırında
-            //public List<CustomerHotelRoomViewModel>? CustomerHotelRooms { get; set; }
-            public List<CustomerHotelRateViewModel>? CustomerHotelRates { get; set; }
+            //// İlişkiler - şimdilik yorum satırında
+            ////public List<CustomerHotelRoomViewModel>? CustomerHotelRooms { get; set; }
+            //public List<CustomerHotelRateViewModel>? CustomerHotelRates { get; set; }
         }
 }
